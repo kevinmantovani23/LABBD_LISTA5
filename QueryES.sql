@@ -59,7 +59,7 @@ END
 
 IF(@sqlfunc = 'd' AND @tipo IS NOT NULL)
 BEGIN
-	
+	EXEC sp_deleteentradasaida @tipo, @codigo_transacao
 END
 
 
