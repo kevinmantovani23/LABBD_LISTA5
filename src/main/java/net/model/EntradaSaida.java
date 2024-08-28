@@ -1,10 +1,12 @@
 package net.model;
 
-public class Saida {
+public class EntradaSaida {
 	
 	private int codigo_transacao;
 	private int codigo_produto;
 	private int quantidade;
+	private String tipo;
+	private long valor_total;
 	
 	public int getCodigo_transacao() {
 		return codigo_transacao;
@@ -30,7 +32,12 @@ public class Saida {
 	public void setValor_total(long valor_total) {
 		this.valor_total = valor_total;
 	}
-	private long valor_total;
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	
 	
 }
-
