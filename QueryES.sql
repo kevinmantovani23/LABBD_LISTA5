@@ -24,7 +24,7 @@ CREATE TABLE saida (
 	PRIMARY KEY (codigo_transacao)
 	FOREIGN KEY (codigo_produto) REFERENCES produto(codigo)
 )
-INSERT INTO produto VALUES(1, 'chocolate', 12.40)
+INSERT INTO produto VALUES(2, 'pimenta', 3.40)
 SELECT * FROM produto
 SELECT * FROM entrada
 SELECT * FROM saida
@@ -59,16 +59,17 @@ END
 
 IF(@sqlfunc = 'd' AND @tipo IS NOT NULL)
 BEGIN
-	EXEC sp_deleteentradasaida @tipo, @codigo_transacao
+	EXEC sp_deleteentradasaida @tipo, @codigo_transacao, @saida OUT
 END
 
 
-CREATE PROCEDURE sp_deleteentradasaida(@tipo VARCHAR(7), @codigo_transacao INT)
+CREATE PROCEDURE sp_deleteentradasaida(@tipo VARCHAR(7), @codigo_transacao INT, @saida VARCHAR(200) OUTPUT)
 AS
 	DECLARE @queryProd VARCHAR(200)
 	DECLARE @erro VARCHAR(200)
 	BEGIN TRY
 	SET @queryProd = 'DELETE FROM ' + @tipo + 'WHERE codigo_transacao = ' + CAST(@codigo_transacao AS VARCHAR(3))
+	SET @saida = @tipo + ' deletado.'
 	END TRY
 		
 	BEGIN CATCH
@@ -95,6 +96,7 @@ AS
 							CAST(@codigo_produto AS VARCHAR(3)) + ', quantidade = '+ CAST(@quantidade AS VARCHAR(3))
 					+ ', valor_total = ' + CAST(@valor_total AS VARCHAR(8)) + ' WHERE codigo_transacao = ' + CAST(@codigo_transacao AS VARCHAR(3))
 		EXEC(@queryProd)
+		SET @saida = @tipo + ' atualizado.'
 		PRINT(@queryProd)
 	END TRY
 		
@@ -121,15 +123,16 @@ AS
 							CAST(@codigo_produto AS VARCHAR(3)) + ''', '''+ CAST(@quantidade AS VARCHAR(3))
 					+ ''', ''' + CAST(@valor_total AS VARCHAR(8)) + ''')'
 		EXEC(@queryProd)
-		PRINT(@queryProd)
+		SET @saida = @tipo + ' inserido.'
 	END TRY
 		
 	BEGIN CATCH
 		SET @erro = ERROR_MESSAGE()
+		
 	END CATCH
-	EXEC sp_errorhandler @erro
 
-	CREATE PROCEDURE sp_errorhandler(@erro VARCHAR(200))
+
+	CREATE  PROCEDURE sp_errorhandler(@erro VARCHAR(200))
 	AS
 	IF(@erro IS NOT NULL)
 		BEGIN
@@ -145,4 +148,3 @@ AS
 		END
 
 
-	

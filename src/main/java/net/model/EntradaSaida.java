@@ -9,6 +9,11 @@ public class EntradaSaida {
 	private String tipo;
 	private long valor_total;
 	
+	@Override
+	public String toString() {
+		return "EntradaSaida [codigo_transacao=" + codigo_transacao + ", codigo_produto=" + codigo_produto
+				+ ", quantidade=" + quantidade + ", tipo=" + tipo + ", valor_total=" + valor_total + "]";
+	}
 	public int getCodigo_transacao() {
 		return codigo_transacao;
 	}

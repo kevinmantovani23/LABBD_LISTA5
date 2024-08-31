@@ -21,8 +21,9 @@ public class EntradaSaidaDao implements ICRUDDao<EntradaSaida> {
 
 	private String callEntradaSaida(String tipo, EntradaSaida t) throws SQLException, ClassNotFoundException {
 		Connection c = gDao.getConnection();
-		String sql = "{CALL sp_entradasaida ?, ?, ?, ?, ?}";
+		String sql = "EXEC sp_entradasaida ?, ?, ?, ?, ?, ?";
 		CallableStatement cs = c.prepareCall(sql);
+		System.out.println(t.toString());
 		cs.setString(1, tipo);
 		cs.setString(2, t.getTipo());
 		cs.setInt(3, t.getCodigo_transacao());
@@ -31,12 +32,14 @@ public class EntradaSaidaDao implements ICRUDDao<EntradaSaida> {
 		cs.registerOutParameter(6, Types.VARCHAR);
 		cs.execute();
 
-		String saida = cs.getString(5);
+		String saida = cs.getString(6);
 
 		cs.close();
 		c.close();
 
+		System.out.println(saida);
 		return saida;
+		
 	}
 
 	@Override
