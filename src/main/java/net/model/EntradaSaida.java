@@ -2,6 +2,7 @@ package net.model;
 
 public class EntradaSaida {
 	
+		
 	private int codigo_transacao;
 	private int codigo_produto;
 	private int quantidade;
